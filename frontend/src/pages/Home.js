@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
 import axios from 'axios';
+import improveImmunityImg from "../Images/Improve-Immunity.webp";
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -67,7 +68,7 @@ const Home = () => {
                     </div>
                     <div className="benefit-card">
                         <img
-                            src=".../Images/Improve-Immunity.webp"
+                            src={improveImmunityImg}
                             alt="Improves Immunity"
                             className="mx-auto mb-4 rounded-md shadow-md"
                         />
