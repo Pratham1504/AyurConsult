@@ -1,129 +1,173 @@
-// const mongoose = require('mongoose');
-// const Blog = require('./models/blogModel'); // Adjust the path if necessary
-
-// const dbURI = 'mongodb+srv://Ayurveda:Ayurveda123@ayurveda.d7oq5.mongodb.net/?retryWrites=true&w=majority&appName=Ayurveda'; // Replace with your MongoDB connection string
-
-// const seedBlogs = async () => {
-//     try {
-//         await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
-//         console.log('MongoDB connected successfully');
-
-//         // Dummy blog data
-//         const blogs = [
-//             {
-//                 title: 'The Healing Power of Herbs',
-//                 description: 'Herbs have been used for thousands of years in Ayurvedic medicine...',
-//                 youtubeLink: 'https://www.youtube.com/watch?v=example1',
-//                 productLink: 'https://yourclinic.com/products/herbal-remedies',
-//             },
-//             {
-//                 title: 'Ayurvedic Practices for Daily Wellness',
-//                 description: 'Incorporating Ayurvedic practices into your daily routine can enhance your overall well-being...',
-//                 youtubeLink: 'https://www.youtube.com/watch?v=example2',
-//                 productLink: 'https://yourclinic.com/products/wellness-kits',
-//             },
-//             {
-//                 title: 'Understanding Doshas in Ayurveda',
-//                 description: 'Learn about the three doshas—Vata, Pitta, and Kapha—and how they affect your health...',
-//                 youtubeLink: 'https://www.youtube.com/watch?v=example3',
-//                 productLink: 'https://yourclinic.com/products/dosha-assessment',
-//             },
-//         ];
-
-//         // Insert the dummy data into the database
-//         await Blog.insertMany(blogs);
-//         console.log('Dummy blog data seeded successfully');
-//     } catch (error) {
-//         console.error('Error seeding blog data:', error);
-//     } finally {
-//         mongoose.connection.close();
-//     }
-// };
-
-// // Call the seed function
-// seedBlogs();
-
-// deleteAllBlogs.js (for temporary use)
-
 const mongoose = require('mongoose');
-const Blog = require('./models/blogModel'); // Adjust the path as necessary
-const Product = require('./models/productModel'); // Assuming you have the Product model
+const Product = require('./models/productModel'); // Assuming the model is in models folder
 
+// Connect to MongoDB
 mongoose.connect('mongodb+srv://Ayurveda:Ayurveda123@ayurveda.d7oq5.mongodb.net/?retryWrites=true&w=majority&appName=Ayurveda', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }).then(() => {
-        console.log('Connected to MongoDB');
-        seedBlogs();
-    }).catch((err) => {
-        console.error('Error connecting to MongoDB:', err);
-    });
-    
-    // Function to seed blogs
-    const seedBlogs = async () => {
-        try {
-            // Fetch some existing products to use their IDs in the blog
-            const products = await Product.find().limit(2); // Assuming you have products, grab two for demo
-            
-            if (products.length === 0) {
-                console.log("No products found. Please seed the products collection first.");
-                return;
-            }
-    
-            const product1 = products[0]._id;
-            const product2 = products[1]._id;
-    
-            // Dummy blog data
-            const blogData = [
-                {
-                    title: "Unlock the Power of Ayurveda: A Deep Dive",
-                    description: `Ayurveda is not just a system of medicine but a way of life that has been practiced for over 5,000 years. This blog will explore the fundamental principles of Ayurveda, focusing on its holistic approach to health. 
-                    Unlike modern medicine, which often focuses on treating symptoms, Ayurveda aims to balance the mind, body, and spirit. By doing so, it addresses the root causes of health issues, leading to long-term wellness. We'll look into the benefits of Ayurvedic herbs, detoxification processes like Panchakarma, and how Ayurveda can improve overall well-being. 
-                    Learn more about daily routines, or "Dinacharya," which include practices such as oil pulling, tongue scraping, and yoga to maintain health and prevent disease.Ayurveda is not just a system of medicine but a way of life that has been practiced for over 5,000 years. This blog will explore the fundamental principles of Ayurveda, focusing on its holistic approach to health. 
-                    Unlike modern medicine, which often focuses on treating symptoms, Ayurveda aims to balance the mind, body, and spirit. By doing so, it addresses the root causes of health issues, leading to long-term wellness. We'll look into the benefits of Ayurvedic herbs, detoxification processes like Panchakarma, and how Ayurveda can improve overall well-being. 
-                    Learn more about daily routines, or "Dinacharya,"`,
-                    topic: "Ayurveda Overview",
-                    youtubeLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                    productId: product1, // Reference to Product 1
-                    likes: 45,
-                    dislikes: 3,
-                },
-                {
-                    title: "The Secrets of Ayurvedic Detoxification",
-                    description: `Ayurvedic detoxification, or Panchakarma, is one of the most effective ways to remove toxins from your body. In this blog, we will delve into the methods used in Ayurveda for detox, focusing on Panchakarma techniques. Panchakarma consists of five main therapies: Vamana (emesis), Virechana (purgation), Basti (enema), Nasya (nasal administration), and Raktamokshana (bloodletting). 
-                    The blog will also guide you on how to prepare for a Panchakarma treatment, including specific dietary changes and herbal supplements. Ayurvedic detox can help with weight loss, increase energy, and improve mental clarity. We'll explore the role of specific Ayurvedic herbs such as Triphala and how they assist in detoxification.Ayurveda is not just a system of medicine but a way of life that has been practiced for over 5,000 years. This blog will explore the fundamental principles of Ayurveda, focusing on its holistic approach to health. 
-                    Unlike modern medicine, which often focuses on treating symptoms, Ayurveda aims to balance the mind, body, and spirit. By doing so, it addresses the root causes of health issues, leading to long-term wellness. We'll look into the benefits of Ayurvedic herbs, detoxification processes like Panchakarma, and how Ayurveda can improve overall well-being. 
-                    Learn more about daily routines, or "Dinacharya,"`,
-                    topic: "Detoxification",
-                    youtubeLink: "https://www.youtube.com/watch?v=example",
-                    productId: product2, // Reference to Product 2
-                    likes: 60,
-                    dislikes: 4,
-                },
-                {
-                    title: "Herbal Remedies for Stress and Anxiety",
-                    description: `Stress is an inevitable part of modern life, but Ayurveda offers numerous remedies to reduce stress and anxiety. This blog will cover various Ayurvedic herbs that act as adaptogens, helping your body adapt to stress. We'll look at Ashwagandha, Brahmi, and Jatamansi — powerful herbs known for their calming effects on the mind and body.
-                    In addition to herbal remedies, we will discuss lifestyle practices recommended in Ayurveda, such as meditation and Pranayama (breathing exercises). You'll also learn about the role of diet in managing stress, with a focus on Sattvic foods that promote mental clarity and peace.`,
-                    topic: "Stress Relief",
-                    youtubeLink: "https://youtu.be/3iEDMps5P-I?si=dWEoAFKoRCaEFz3u",
-                    productId: product1, // Reference Product 1 again
-                    likes: 75,
-                    dislikes: 2,
-                }
-            ];
-    
-            // Clear the blogs collection before seeding
-            await Blog.deleteMany();
-            
-            // Insert the dummy blogs
-            const result = await Blog.insertMany(blogData);
-            console.log('Blogs seeded:', result);
-            
-            mongoose.connection.close();
-        } catch (error) {
-            console.error('Error seeding blogs:', error);
-            mongoose.connection.close();
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log('Connected to MongoDB');
+    seedProducts();
+}).catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+});
+
+// Seed products function
+const seedProducts = async () => {
+    try {
+    // Remove existing products
+    await Product.deleteMany({});
+    console.log('Existing products removed');
+
+    const products = [
+        {
+            name: 'Ashwagandha Tablets',
+            description: 'Ashwagandha helps in managing stress and boosting energy.',
+            price: 299,
+            MRP: 350,
+            company: 'Baidyanath',
+            size: '60 Tablets',
+            ingredients: ['Ashwagandha', 'Ginger Root', 'Black Pepper'],
+            usage: 'Take 1 tablet twice a day after meals.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Rohit', email: 'rohit@gmail.com', rating: 5, review: 'Great for stress relief.' }
+            ]
+        },
+        {
+            name: 'Triphala Churna',
+            description: 'A natural digestive aid and detoxifier.',
+            price: 180,
+            MRP: 210,
+            company: 'Patanjali',
+            size: '100g',
+            ingredients: ['Amla', 'Haritaki', 'Bibhitaki'],
+            usage: 'Mix 1 tsp in warm water before bed.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Suman', email: 'suman@gmail.com', rating: 4, review: 'Very effective for digestion.' }
+            ]
+        },
+        {
+            name: 'Chyawanprash',
+            description: 'Immunity booster packed with antioxidants.',
+            price: 350,
+            MRP: 400,
+            company: 'Dabur',
+            size: '500g',
+            ingredients: ['Amla', 'Ashwagandha', 'Honey'],
+            usage: 'Take 1 tsp daily with warm milk or water.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Neha', email: 'neha@gmail.com', rating: 5, review: 'Boosts immunity well.' }
+            ]
+        },
+        {
+            name: 'Brahmi Capsules',
+            description: 'Supports memory and cognitive function.',
+            price: 220,
+            MRP: 270,
+            company: 'Zandu',
+            size: '30 Capsules',
+            ingredients: ['Brahmi', 'Shankhpushpi'],
+            usage: 'Take 1 capsule after meals daily.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Rajesh', email: 'rajesh@gmail.com', rating: 4, review: 'Helps with focus and clarity.' }
+            ]
+        },
+        {
+            name: 'Amla Juice',
+            description: 'Rich in Vitamin C, promotes healthy skin and hair.',
+            price: 150,
+            MRP: 180,
+            company: 'Patanjali',
+            size: '1 Liter',
+            ingredients: ['Amla'],
+            usage: 'Take 30 ml diluted in water daily.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Anjali', email: 'anjali@gmail.com', rating: 5, review: 'Improves skin texture.' }
+            ]
+        },
+        {
+            name: 'Neem Capsules',
+            description: 'Purifies blood and promotes healthy skin.',
+            price: 130,
+            MRP: 160,
+            company: 'Organic India',
+            size: '60 Capsules',
+            ingredients: ['Neem'],
+            usage: 'Take 1 capsule after meals daily.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Sunil', email: 'sunil@gmail.com', rating: 4, review: 'Good for skin issues.' }
+            ]
+        },
+        {
+            name: 'Kesar Chandan Face Pack',
+            description: 'Natural face pack for glowing skin.',
+            price: 99,
+            MRP: 120,
+            company: 'Vicco',
+            size: '50g',
+            ingredients: ['Saffron', 'Sandalwood'],
+            usage: 'Apply on face for 15 minutes, wash with lukewarm water.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Priya', email: 'priya@gmail.com', rating: 5, review: 'Amazing glow after use!' }
+            ]
+        },
+        {
+            name: 'Ayush Kwath',
+            description: 'Herbal formula for boosting immunity.',
+            price: 199,
+            MRP: 250,
+            company: 'Kerala Ayurveda',
+            size: '100g',
+            ingredients: ['Tulsi', 'Dalchini', 'Sunthi', 'Kali Mirch'],
+            usage: 'Mix 1 tsp in hot water and drink twice a day.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Vikas', email: 'vikas@gmail.com', rating: 4, review: 'Effective for colds and flu.' }
+            ]
+        },
+        {
+            name: 'Shilajit Capsules',
+            description: 'Boosts stamina and supports overall health.',
+            price: 499,
+            MRP: 600,
+            company: 'Himalaya',
+            size: '30 Capsules',
+            ingredients: ['Shilajit'],
+            usage: 'Take 1 capsule after meals daily.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Deepak', email: 'deepak@gmail.com', rating: 5, review: 'Great for stamina and energy.' }
+            ]
+        },
+        {
+            name: 'Turmeric Powder',
+            description: 'Natural anti-inflammatory and antioxidant.',
+            price: 120,
+            MRP: 150,
+            company: 'Organic India',
+            size: '100g',
+            ingredients: ['Turmeric'],
+            usage: 'Add 1 tsp to milk or dishes for added benefits.',
+            image: 'https://via.placeholder.com/150',
+            ratings: [
+                { name: 'Manisha', email: 'manisha@gmail.com', rating: 5, review: 'High-quality turmeric.' }
+            ]
         }
-    };
+    ];
+
     
-    
+        await Product.insertMany(products);
+        console.log('Products have been seeded successfully');
+        mongoose.connection.close();
+    } catch (err) {
+        console.error('Error seeding products:', err);
+        mongoose.connection.close();
+    }
+};

@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import BlogDetail from './components/BlogDetail';
 import Cart from './components/cartComponent'; // Import the Cart component
 import { CartProvider } from './context/CartContextProv'; // Import CartProvider
+import ProdDetail from './components/ProdDetail';
 import { useState } from 'react';
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/blogs" element={<BlogPage />} />
               <Route path="/blogs/:id" element={<BlogDetail />} />
-              <Route path="/products" element={<Products />} /> {/* Add Products route */}
+              <Route path="/products" element={<Products />} /> 
+              <Route exact path="/products/:id" element={<ProdDetail/>} />
             </Routes>
           </div>
           <Footer />

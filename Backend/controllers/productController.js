@@ -60,10 +60,47 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// Add a rating to a product
+const addRating = async (req, res) => {
+  try {
+    const { name, email, review, rating } = req.body;
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Push new rating into the product's ratings array
+    product.ratings.push({ name, email, review, rating });
+    await product.save();
+
+    res.status(200).json({ message: 'Rating added successfully', product });
+  } catch (error) {
+    res.status(400).json({ message: 'Error adding rating', error });
+  }
+};
+
+// Get all ratings for a product
+const getRatings = async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json(product.ratings);
+  } catch (error) {
+    res.status(400).json({ message: 'Error fetching ratings', error });
+  }
+};
+
 module.exports = {
   createProduct,
   getProduct,
   getAllProducts,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  addRating,
+  getRatings
 };
