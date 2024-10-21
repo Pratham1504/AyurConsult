@@ -1,13 +1,20 @@
 const Product = require('../models/productModel');
+const cloudinary = require('../cloudinaryConfig');
 
 // Create a new product
 const createProduct = async (req, res) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
+      // Upload the image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+
+      const product = new Product({
+          ...req.body,
+          image: result.secure_url // Store the Cloudinary URL
+      });
+      await product.save();
+      res.status(201).json(product);
   } catch (error) {
-    res.status(400).json({ message: 'Error creating product', error });
+      res.status(400).json({ message: 'Error creating product', error });
   }
 };
 
@@ -37,15 +44,32 @@ const getAllProducts = async (req, res) => {
 // Update a product by ID
 const updateProduct = async (req, res) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    let updatedData = { ...req.body };
+
+    // Check if there is a new image in the request
+    if (req.file) {
+      // Upload the new image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
+      // Add the new image URL to the update data
+      updatedData.image = result.secure_url;
+    }
+
+    // Find the product by ID and update it
+    const product = await Product.findByIdAndUpdate(req.params.id, updatedData, { 
+      new: true, 
+      runValidators: true 
+    });
+
     if (!product) {
       return res.status(404).json({ message: 'Product not found' });
     }
+
     res.status(200).json(product);
   } catch (error) {
     res.status(400).json({ message: 'Error updating product', error });
   }
 };
+
 
 // Delete a product by ID
 const deleteProduct = async (req, res) => {

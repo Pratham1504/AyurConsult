@@ -27,6 +27,20 @@ const BlogList = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
 
+    // Function to truncate HTML description
+    const truncateHtml = (html, maxLength) => {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+
+        // Remove HTML tags
+        const textContent = tempDiv.textContent || tempDiv.innerText || "";
+
+        // Truncate to maxLength
+        return textContent.length > maxLength 
+            ? textContent.substring(0, maxLength) + '...' 
+            : textContent;
+    };
+
     if (loading) return <div className="text-center">Loading...</div>;
     if (error) return <div className="text-red-500">Error fetching blogs: {error.message}</div>;
 
@@ -54,7 +68,7 @@ const BlogList = () => {
                                 <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
                             </h2>
                             <p className="mb-3 sm:mb-5 font-light text-xs sm:text-sm md:text-base text-gray-600">
-                                {blog.description.substring(0, 150)}...
+                                {truncateHtml(blog.description, 150)} {/* Truncate to 150 characters */}
                             </p>
                             <div className="flex justify-between items-center">
                                 <div className="flex items-center space-x-2 sm:space-x-4">

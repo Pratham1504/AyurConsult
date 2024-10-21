@@ -11,6 +11,11 @@ import Cart from './components/cartComponent'; // Import the Cart component
 import { CartProvider } from './context/CartContextProv'; // Import CartProvider
 import ProdDetail from './components/ProdDetail';
 import { useState } from 'react';
+import AdminBlogs from './pages/AdminBlogs';
+import AdminProduct from './pages/AdminProduct';
+import Admin from './pages/AdminPage';
+import BlogEditor from './components/BlogEditor';
+import { NotificationProvider } from './context/NotificationContext';
 
 function App() {
   const [cartVisible, setCartVisible] = useState(false); // State for cart visibility
@@ -19,14 +24,20 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <CartProvider> {/* Wrap with CartProvider */}
+        <NotificationProvider>
           <Navbar />
           <div className="pages">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/blogs" element={<BlogPage />} />
               <Route path="/blogs/:id" element={<BlogDetail />} />
-              <Route path="/products" element={<Products />} /> 
-              <Route exact path="/products/:id" element={<ProdDetail/>} />
+              <Route path="/products" element={<Products />} />
+              <Route exact path="/products/:id" element={<ProdDetail />} />
+              <Route path="/admin/blogs" element={<AdminBlogs />} />
+              <Route path="/admin/products" element={<AdminProduct />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/admin/blogs/create" element={<BlogEditor />} />
+              <Route path="/admin/blogs/edit/:id" element={<BlogEditor />} />
             </Routes>
           </div>
           <Footer />
@@ -41,6 +52,7 @@ function App() {
               <Cart onClose={() => setCartVisible(false)} />
             </div>
           )}
+          </NotificationProvider>
         </CartProvider>
       </BrowserRouter>
     </div>

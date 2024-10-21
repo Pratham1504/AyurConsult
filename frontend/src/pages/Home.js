@@ -57,13 +57,34 @@ const Home = () => {
         setCurrentSlide((prevSlide) => (prevSlide - 1 + blogs.length) % blogs.length);
     };
 
+    // Function to truncate HTML description
+    const truncateHtml = (html, maxLength) => {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = html;
+
+        // Remove HTML tags
+        const textContent = tempDiv.textContent || tempDiv.innerText || "";
+
+        // Truncate to maxLength
+        return textContent.length > maxLength 
+            ? textContent.substring(0, maxLength) + '...' 
+            : textContent;
+    };
+
+    // Function to calculate discount percentage
+    const calculateDiscount = (price, MRP) => {
+        if (!MRP || price >= MRP) return 0; // Return 0 if no MRP or price is equal to or greater than MRP
+        const discount = ((MRP - price) / MRP) * 100;
+        return discount.toFixed(0); // Returns discount as a percentage
+    };
+
     if (loading) return <div className="text-center">Loading...</div>;
     if (error) return <div className="text-red-500">Error fetching data: {error.message}</div>;
 
     return (
         <div className="scrollable-home">
             {/* Benefits of Ayurveda Section */}
-            <section className=" py-4">
+            <section className="py-4">
                 <div className="bg-green-100 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-6">
                     <h2 className="text-3xl font-bold text-green-600 mb-6">| Benefits of Ayurveda</h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -99,7 +120,7 @@ const Home = () => {
             </section>
 
             {/* Blog Topics Section */}
-            <section className=" py-4">
+            <section className="py-4">
                 <div className="bg-gray-100 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-6">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-3xl font-bold text-green-600">| Blogs</h2>
@@ -126,7 +147,7 @@ const Home = () => {
                                 {/* Blog content */}
                                 <div className="flex justify-between items-center mb-4">
                                     {/* Blog Title */}
-                                    <h3 className=" font-bold text-gray-700">
+                                    <h3 className="font-bold text-gray-700">
                                         {blogs[currentSlide].title}
                                     </h3>
                                     {/* Created Date */}
@@ -143,7 +164,7 @@ const Home = () => {
                                 {/* Blog Description */}
                                 <div className="bg-gray-200 p-4 rounded-md mb-4" style={{ maxHeight: '200px', overflowY: 'auto' }}>
                                     <p className="text-sm text-gray-600">
-                                        {blogs[currentSlide].description.substring(0, 500)}...
+                                        {truncateHtml(blogs[currentSlide].description, 500)} {/* Truncate to 500 characters */}
                                     </p>
                                 </div>
 
@@ -169,27 +190,37 @@ const Home = () => {
 
             {/* Product Previews Section */}
             <section className="py-4">
-                <div className="bg-green-100 px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-6">
+                <div className="px-4 mx-auto max-w-screen-xl lg:py-8 lg:px-6">
                     <h2 className="text-3xl font-bold text-green-600 mb-6">| Our Products</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                        {products.slice(0, 8).map((product) => (
-                            <Link
-                                key={product.id}
-                                to={`/product/${product.id}`}
-                                className="product-card p-4 bg-green-100 rounded-lg shadow-lg hover:shadow-xl transition-shadow relative block"
-                            >
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-48 object-cover mb-4 rounded-md"
-                                />
-                                <div className="flex justify-between items-center mb-2">
-                                    <h3 className="text-lg font-semibold text-gray-700">{product.name}</h3>
-                                    <p className="text-lg font-bold text-black">₹{product.price}</p>
-                                </div>
-                                <p className="text-sm text-gray-500">{product.description}</p>
-                            </Link>
-                        ))}
+                        {products.slice(0, 8).map((product) => {
+                            const discount = calculateDiscount(product.price, product.MRP);
+
+                            return (
+                                <Link
+                                    key={product._id}
+                                    to={`/products/${product._id}`}
+                                    className="product-card p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow relative block"
+                                >
+                                    {/* Discount Badge */}
+                                    {discount > 0 && (
+                                        <span className="absolute top-2 left-2 bg-blue-500 text-white text-sm px-2 py-1 rounded">
+                                            {discount}% off
+                                        </span>
+                                    )}
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                        className="w-full h-48 object-cover mb-4 rounded-md"
+                                    />
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="text-lg font-semibold text-gray-700">{product.name}</h3>
+                                        <p className="text-lg font-bold text-black">₹{product.price}</p>
+                                    </div>
+                                    <p className="text-sm text-gray-500">{truncateHtml(product.description, 100)}</p>
+                                </Link>
+                            );
+                        })}
                     </div>
                     <div className="text-center mt-8">
                         <Link to="/products" className="bg-green-500 text-white px-6 py-2 rounded-md shadow-md hover:bg-green-600">
