@@ -18,6 +18,7 @@ const Navbar = () => {
               <a href="/products" className="text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Products</a>
               <a href="/consulting" className="text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Consulting</a>
               <a href="/blogs" className="text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">Blogs</a>
+              <a href="/ebooks" className="text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">E-Books</a>
               <a href="/about" className="text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-sm font-medium">About</a>
             </div>
           </div>
@@ -53,6 +54,7 @@ const Navbar = () => {
             <a href="/products" className="block text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-base font-medium">Products</a>
             <a href="/consulting" className="block text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-base font-medium">Consulting</a>
             <a href="/blogs" className="block text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-base font-medium">Blogs</a>
+            <a href="/ebooks" className="block text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-base font-medium">E-Books</a>
             <a href="/about" className="block text-gray-800 hover:text-green-600 px-3 py-2 rounded-md text-base font-medium">About</a>
           </div>
         </div>

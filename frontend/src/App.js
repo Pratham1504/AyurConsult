@@ -13,9 +13,12 @@ import ProdDetail from './components/ProdDetail';
 import { useState } from 'react';
 import AdminBlogs from './pages/AdminBlogs';
 import AdminProduct from './pages/AdminProduct';
+import AdminEbooks from './pages/AdminEbooks';
 import Admin from './pages/AdminPage';
 import BlogEditor from './components/BlogEditor';
+import CreateEbook from './components/CreateEbook';
 import { NotificationProvider } from './context/NotificationContext';
+import Ebook from './pages/ebooks'
 
 function App() {
   const [cartVisible, setCartVisible] = useState(false); // State for cart visibility
@@ -38,6 +41,9 @@ function App() {
               <Route path="/admin" element={<Admin />} />
               <Route path="/admin/blogs/create" element={<BlogEditor />} />
               <Route path="/admin/blogs/edit/:id" element={<BlogEditor />} />
+              <Route path="/admin/ebooks/" element={<AdminEbooks />} />
+              <Route path="/admin/ebooks/create" element={<CreateEbook />} />
+              <Route path="/ebooks" element={<Ebook />} />
             </Routes>
           </div>
           <Footer />

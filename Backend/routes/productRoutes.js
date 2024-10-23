@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' }); // Temporary storage
+const upload = multer({ dest: './uploads/' }); // Temporary storage
 const { createProduct, getProduct, getAllProducts, updateProduct, deleteProduct, addRating, getRatings } = require('../controllers/productController');
 
 const router = express.Router();
